@@ -8,19 +8,22 @@ import { v4 as uuidv4 } from "uuid";
 function App() {
   const [rating, setRating] = useState(10);
   const [feedback, setFeedback] = useState([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const storedFeedback = localStorage.getItem('feedbacks');
     if (storedFeedback) {
       setFeedback(JSON.parse(storedFeedback));
     }
+    setIsInitialized(true);
   }, []);
 
   useEffect(() => {
-    if (feedback.length > 0) {
+    if (isInitialized) {
+      
       localStorage.setItem('feedbacks', JSON.stringify(feedback));
     }
-  }, [feedback]);
+  }, [feedback, isInitialized]);
 
   const addFeedback = (newRating, newReview) => {
     const newFeedback = {
